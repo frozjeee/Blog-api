@@ -72,7 +72,7 @@ export class AuthService {
     }
 
 
-    registerUser(user: User): Observable<User> {
+    register(user: User): Observable<User> {
         const { name, password, balance, role, registered_at } = user;
         return this.doesUserExist(name).pipe(
             tap((doesUserExist: boolean) => {

@@ -1,6 +1,5 @@
 import { Injectable, NestMiddleware } from '@nestjs/common';
 import { RedisService } from 'src/redis/redis.service';
-import { AuthService } from './auth.service';
 
 
 

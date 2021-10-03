@@ -11,7 +11,7 @@ export class AuthController {
     
     @Post('register')
     createUser(@Body() payload: User) {
-        return this.AuthService.registerUser(payload);
+        return this.AuthService.register(payload);
     }
 
     @Post('login')
