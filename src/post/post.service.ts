@@ -40,18 +40,20 @@ export class PostService {
       );
   }
 
-  findOne(title: findPostDto): Observable<PostInterface[]> {
+  find(title: findPostDto): Observable<PostInterface[]> {
     return from(this.postRepository.find(title));
   }
 
-  remove(slug: deletePostDto): Observable<string> {
+  delete(slug: deletePostDto): Observable<object> {
     return from(this.postRepository.findOne(slug))
     .pipe(
-      map((value: PostInterface) => {
+      map((value: deletePostDto) => {
         if (value) {
-          const slug = value.slug;
-          this.postRepository.delete(slug);
-          return "Post deleted";
+          this.postRepository.delete(value["id"]);
+          return {message: "Post deleted"};;
+        }
+        else {
+          return {message: "Post not found"};
         }
 
       })

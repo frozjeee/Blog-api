@@ -18,13 +18,13 @@ export class PostController {
     }
 
     @Post('find')
-    findOnePost(@Body() payload: findPostDto): Observable<PostInterface[]> {
-        return this.PostService.findOne(payload);
+    findPosts(@Body() payload: findPostDto): Observable<PostInterface[]> {
+        return this.PostService.find(payload);
     }
 
-    // @UseGuards(JwtAuthGuard)
-    // @Post('delete')
-    // deletePost(@Body() payload: deletePostDto): Observable<string> {
-    //     return this.PostService.remove(payload);
-    // }
+    @UseGuards(JwtAuthGuard)
+    @Post('delete')
+    deletePost(@Body() payload: deletePostDto): Observable<object> {
+        return this.PostService.delete(payload);
+    }
 }
