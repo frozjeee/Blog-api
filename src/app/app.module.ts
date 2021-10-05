@@ -1,12 +1,16 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from 'src/auth/auth.module';
 import { PostModule } from 'src/post/post.module';
 import { RedisModule } from 'src/redis/redis.module';
+import { SearchModule } from 'src/search/search.module';
 
 
 @Module({
-  imports: [TypeOrmModule.forRoot({
+  imports: [
+    ConfigModule.forRoot(),
+    TypeOrmModule.forRoot({
     type: "postgres",
     host: 'localhost',
     port: 5432,
@@ -26,7 +30,7 @@ import { RedisModule } from 'src/redis/redis.module';
       "migrationsDir": "src/migration"
     }
   }),
-  AuthModule, PostModule, RedisModule
+  AuthModule, PostModule, RedisModule, SearchModule
 
 ],
 })

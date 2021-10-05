@@ -22,16 +22,13 @@ export class PostService {
     }
 
   createPost(post: PostInterface, userPayload: User): Observable<PostInterface> {
-    const { title, content, category, created_at } = post;
+    const { title } = post;
     return this.slugifyTitle(title).pipe(
       switchMap((slugifiedTitle: string) => {
         post.author = userPayload["user"];
         return from(
           this.postRepository.save({
-            title,
-            content,
-            category,
-            created_at,
+            ...post,
             slug: slugifiedTitle,
             author: post.author
           })
