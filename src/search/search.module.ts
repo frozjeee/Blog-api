@@ -6,6 +6,9 @@ import { ElasticsearchModule } from '@nestjs/elasticsearch';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      envFilePath: '.elastic.env'
+    }),
     ElasticsearchModule.registerAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
