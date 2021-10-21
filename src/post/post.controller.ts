@@ -1,15 +1,19 @@
-import { Controller, Post, Body, UseGuards, Request, Get } from '@nestjs/common';
+import { Controller, Post, Body, UseGuards, Request, Get, Query } from '@nestjs/common';
 import { deletePostDto, findPostDto } from './dto/post.dto';
 import { PostService } from './post.service';
 import { PostInterface } from './interface/post.interface';
 import { Observable } from 'rxjs';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { PostSearchService } from './postSearch.service';
 
 
 @Controller('post')
 export class PostController {
     
-    constructor(private readonly PostService: PostService) {}
+    constructor(
+        private readonly PostService: PostService,
+        private readonly elasticSearchService: PostSearchService
+    ) {}
 
     @UseGuards(JwtAuthGuard)
     @Post('create')
@@ -27,4 +31,10 @@ export class PostController {
     deletePost(@Body() payload: deletePostDto): Observable<object> {
         return this.PostService.delete(payload);
     }
+
+    @Get('search')
+    Search(@Query() search: string) {
+        return this.elasticSearchService.search(search);
+    }
+
 }

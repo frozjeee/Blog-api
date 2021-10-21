@@ -1,5 +1,27 @@
 version: '3.9'
 services:
+
+  postgres:
+    container_name: postgres
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    volumes:
+      - /data/postgres:/data/postgres
+    env_file:
+      - .docker.env
+    networks:
+      - postgres
+  
+  redis:
+    image: "redis:alpine"
+    container_name: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - $PWD/redis-data:/var/lib/redis
+      - $PWD/redis.conf:/usr/local/etc/redis/redis.conf
+
   es01:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.15.0
     container_name: es01
@@ -66,7 +88,12 @@ volumes:
     driver: local
   data03:
     driver: local
+  postgres-data:
+    driver: local
+  
 
 networks:
   elastic:
+    driver: bridge
+  postgres:
     driver: bridge

@@ -14,8 +14,8 @@ import * as redisStore from 'cache-manager-ioredis';
           };
       },
   }),
-  ],
-  providers: [RedisService],
+],
+providers: [RedisService],
   exports: [RedisService, RedisModule, CacheModule]
 })
 export class RedisModule {}

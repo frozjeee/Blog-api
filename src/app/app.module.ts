@@ -10,17 +10,17 @@ import { SearchModule } from 'src/search/search.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: '.typeorm.env',
+      envFilePath: '.postgres.env',
     }),
     TypeOrmModule.forRootAsync({
         imports: [ConfigModule],
         useFactory: async (configService: ConfigService) => ({
           type: 'postgres',
-          host: configService.get('TYPEORM_HOST'),
-          port: Number(configService.get('TYPEORM_PORT')),
-          username: configService.get('TYPEORM_USERNAME'),
-          password: configService.get('TYPEORM_PASSWORD'),
-          database: configService.get('TYPEORM_DATABASE'),
+          host: configService.get('POSTGRES_HOST'),
+          port: Number(configService.get('POSTGRES_PORT')),
+          username: configService.get('POSTGRES_USERNAME'),
+          password: configService.get('POSTGRES_PASSWORD'),
+          database: configService.get('POSTGRES_DATABASE'),
           synchronize: true,
             logging: false,
             entities: [
@@ -36,26 +36,6 @@ import { SearchModule } from 'src/search/search.module';
         }),
         inject: [ConfigService],
     }),
-  //     {
-  //   type: "postgres",
-  //   host: 'localhost',
-  //   port: 5432,
-  //   username: 'postgres',
-  //   password: 'root',
-  //   database : 'nestjs',
-  //   synchronize: true,
-  //   logging: false,
-  //   entities: [
-  //     "dist/**/*.entity.js"
-  //   ],
-  //   migrations: [
-  //     "src/migration/*.js"
-  //   ],
-  //   cli: {
-  //     "entitiesDir": "dist/entity",
-  //     "migrationsDir": "src/migration"
-  //   }
-  // }
   AuthModule, PostModule, RedisModule, SearchModule
 
 ],
