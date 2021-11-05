@@ -1,8 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ElasticsearchService } from '@nestjs/elasticsearch';
 import { from } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
-import { Post as PostEntity } from 'src/entity/post.entity';
+import { PostInterface } from './interface/post.interface';
 import { PostSearchBody } from './interface/PostSearchBody.interface';
 import { PostSearchResult } from './interface/PostSearchResult.interface';
 
@@ -13,8 +12,7 @@ export class PostSearchService {
         private readonly elasticSearchService: ElasticsearchService
       ) {}
 
-    indexPost(post: PostEntity) {
-      console.log(post);
+    indexPost(post: PostInterface) {
       return from(this.elasticSearchService.index<PostSearchResult, PostSearchBody>({
         index: this.index,
           body: {
@@ -39,6 +37,33 @@ export class PostSearchService {
         }
       })
       const hits = body.hits.hits;
+      return hits.forEach((item) => item._source);
+    }
+
+    async getAllPosts() {
+      const { body } = await this.elasticSearchService.search<PostSearchResult>({
+        index: this.index,
+        body: {
+          query: {
+            match_all: {}
+          }
+        }
+      })
+      const hits = body.hits.hits;
       return hits.map((item) => item._source);
+    }
+
+    deleteDoc(postId: number) {
+      from(this.elasticSearchService.deleteByQuery({
+        index: this.index,
+        body: {
+          query: {
+            match: {
+              id: postId
+            }
+          }
+        } 
+      })
+      )
     }
   }

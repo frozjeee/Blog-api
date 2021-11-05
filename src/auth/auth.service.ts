@@ -73,7 +73,7 @@ export class AuthService {
 
 
     register(user: User): Observable<User> {
-        const { name, password, balance, role, registered_at } = user;
+        const { name, password } = user;
         return this.doesUserExist(name).pipe(
             tap((doesUserExist: boolean) => {
               if (doesUserExist){
@@ -88,10 +88,7 @@ export class AuthService {
                 switchMap((hashedPassword: string) => {
                   return from(
                     this.userRepository.save({
-                      name,
-                      balance,
-                      registered_at,
-                      role,
+                      ...user,
                       password: hashedPassword
                     }),
 
@@ -111,23 +108,8 @@ export class AuthService {
       return this.validateUser(name, password).pipe(
         switchMap((user: User) => {
           if (user) {
-            
-            const accessToken = from(this.jwtService.signAsync({ user }, {expiresIn: "60s"}))
-            .pipe( 
-              map((value: string) => {
-                this.redisService.set("access_token", value, 60);
-                return value;
-              })
-            );
-
-            const refreshToken = from(this.jwtService.signAsync({ user }, {expiresIn: "5 minute"}))
-            .pipe(
-              map((value: string) => {
-                this.redisService.set("refresh_token", value, 60 * 5);
-                return value;
-              })
-            );
-            
+            const accessToken = from(this.jwtService.signAsync({ user }, {expiresIn: "5 minute"}));
+            const refreshToken = from(this.jwtService.signAsync({ user }, {expiresIn: "1 hour"}));
             return forkJoin({accessToken, refreshToken});
           } 
 
@@ -147,10 +129,10 @@ export class AuthService {
               })
             );
 
-            const refreshToken = from(this.jwtService.signAsync({ refreshTokenPayload }, {expiresIn: "30 minute"}))
+            const refreshToken = from(this.jwtService.signAsync({ refreshTokenPayload }, {expiresIn: "1 hour"}))
             .pipe(
               map((value: string) => {
-                this.redisService.set("refresh_token", value, 60 * 30);
+                this.redisService.set("refresh_token", value, 60 * 60);
                 return value;
               })
             );

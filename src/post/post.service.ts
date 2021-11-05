@@ -4,7 +4,7 @@ import { from, Observable, of } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 import { Repository } from 'typeorm';
 import { Post as PostEntity } from '../entity/post.entity';
-import { deletePostDto, findPostDto } from './dto/post.dto';
+import { deletePostDto } from './dto/post.dto';
 import { PostInterface } from './interface/post.interface';
 import { User } from 'src/user/user.class';
 import { PostSearchService } from './postSearch.service';
@@ -28,20 +28,20 @@ export class PostService {
     return this.slugifyTitle(title).pipe(
       switchMap((slugifiedTitle: string) => {
         post.author = userPayload["user"];
-        this.postsSearchService.indexPost(post);
         return from(
           this.postRepository.save({
             ...post,
             slug: slugifiedTitle,
             author: post.author
           })
+        ).pipe(
+          map((post: PostInterface) => {
+            this.postsSearchService.indexPost(post);
+            return post;
+          })
         )
       })
       );
-  }
-
-  find(title: findPostDto): Observable<PostInterface[]> {
-    return from(this.postRepository.find(title));
   }
 
   delete(slug: deletePostDto): Observable<object> {
@@ -50,6 +50,7 @@ export class PostService {
       map((value: deletePostDto) => {
         if (value) {
           this.postRepository.delete(value["id"]);
+          this.postsSearchService.deleteDoc(value["id"]);
           return {message: "Post deleted"};;
         }
         else {
@@ -58,7 +59,6 @@ export class PostService {
 
       })
     );
-    
   }
 
   

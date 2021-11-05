@@ -21,11 +21,6 @@ export class PostController {
         return this.PostService.createPost(payload, req.user);
     }
 
-    @Post('find')
-    findPosts(@Body() payload: findPostDto): Observable<PostInterface[]> {
-        return this.PostService.find(payload);
-    }
-
     @UseGuards(JwtAuthGuard)
     @Post('delete')
     deletePost(@Body() payload: deletePostDto): Observable<object> {
@@ -34,7 +29,10 @@ export class PostController {
 
     @Get('search')
     Search(@Query() search: string) {
-        return this.elasticSearchService.search(search);
+        if (search["search"]) {
+            return this.elasticSearchService.search(search);
+          }
+          return this.elasticSearchService.getAllPosts();
     }
 
 }
