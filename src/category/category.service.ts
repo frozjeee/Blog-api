@@ -31,4 +31,8 @@ export class CategoryService {
         getAllCategories(): Observable<CategoryEntity[]> {
             return from(this.categoryRepository.find());
         }
+
+        findOneCategory(id: number): Observable<CategoryEntity> {
+            return from(this.categoryRepository.findOne(id));
+        }
 }

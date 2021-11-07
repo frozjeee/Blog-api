@@ -8,6 +8,7 @@ import { deletePostDto } from './dto/post.dto';
 import { PostInterface } from './interface/post.interface';
 import { User } from 'src/user/user.class';
 import { PostSearchService } from './postSearch.service';
+import { CategoryService } from 'src/category/category.service';
 const randomstring = require('../../node_modules/randomstring/index.js');
 
 @Injectable()
@@ -16,7 +17,8 @@ export class PostService {
   constructor(
     @InjectRepository(PostEntity)
     private readonly postRepository: Repository<PostEntity>,
-    private postsSearchService: PostSearchService
+    private postsSearchService: PostSearchService,
+    private categoryService: CategoryService,
   ) {}
 
     slugifyTitle(title: string): Observable<string> {
@@ -28,11 +30,11 @@ export class PostService {
     return this.slugifyTitle(title).pipe(
       switchMap((slugifiedTitle: string) => {
         post.author = userPayload["user"];
+        console.log(post);
         return from(
           this.postRepository.save({
             ...post,
             slug: slugifiedTitle,
-            author: post.author
           })
         ).pipe(
           map((post: PostInterface) => {

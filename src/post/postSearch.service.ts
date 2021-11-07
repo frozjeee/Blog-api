@@ -19,6 +19,7 @@ export class PostSearchService {
             id: post.id,
             title: post.title,
             content: post.content,
+            category: post.category,
             authorId: post.author.id,
           }
         }))
@@ -30,14 +31,14 @@ export class PostSearchService {
         body: {
           query: {
             multi_match: {
-              query: text["search"],
+              query: text,
               fields: ["title", "content"]
             }
           }
         }
       })
       const hits = body.hits.hits;
-      return hits.forEach((item) => item._source);
+      return hits.map((item) => item._source);
     }
 
     async getAllPosts() {

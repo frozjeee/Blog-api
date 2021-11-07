@@ -28,9 +28,9 @@ export class PostController {
     }
 
     @Get('search')
-    Search(@Query() search: string) {
+    Search(@Query() search: object) {
         if (search["search"]) {
-            return this.elasticSearchService.search(search);
+            return this.elasticSearchService.search(search["search"]);
           }
           return this.elasticSearchService.getAllPosts();
     }
