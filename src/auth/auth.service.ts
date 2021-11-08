@@ -10,6 +10,7 @@ import { JwtService } from '@nestjs/jwt';
 import { TokensDto } from './dto/auth.dto';
 import { tap } from 'rxjs';
 import { RedisService } from 'src/redis/redis.service';
+import { UserSearchService } from 'src/user/userSearch.service';
 
 
  
@@ -20,6 +21,7 @@ export class AuthService {
     private userRepository: Repository<UserEntity>,
     private jwtService: JwtService,
     private redisService: RedisService,
+    private userSearchService: UserSearchService,
   ) {}
 
 
@@ -95,6 +97,7 @@ export class AuthService {
                   ).pipe(
                     map((user: User) => {
                       delete user.password;
+                      this.userSearchService.indexUser(user);
                       return user;
                     })
                   )

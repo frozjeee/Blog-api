@@ -5,6 +5,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User as UserEntity} from 'src/entity/user.entity';
 import { RedisModule } from 'src/redis/redis.module';
 import { RedisService } from 'src/redis/redis.service';
+import { SearchModule } from 'src/search/search.module';
+import { UserModule } from 'src/user/user.module';
+import { UserSearchService } from 'src/user/userSearch.service';
 import { AuthController } from './auth.controller';
 import { AuthMiddleware } from './auth.middleware';
 import { AuthService } from './auth.service';
@@ -16,9 +19,11 @@ import { JwtStrategy } from './jwt.strategy';
     JwtModule.register({
         secret: jwtConstants.accessSecret,
       }),
-    RedisModule    
+    RedisModule,
+    UserModule,
+    SearchModule,
 ],
-    providers: [AuthService, JwtStrategy, RedisService,],
+    providers: [AuthService, JwtStrategy, RedisService, UserSearchService],
     controllers: [AuthController],
     exports: [AuthService]  
 })

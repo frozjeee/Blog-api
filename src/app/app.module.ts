@@ -6,6 +6,7 @@ import { CategoryModule } from 'src/category/category.module';
 import { PostModule } from 'src/post/post.module';
 import { RedisModule } from 'src/redis/redis.module';
 import { SearchModule } from 'src/search/search.module';
+import { UserModule } from 'src/user/user.module';
 
 
 @Module({
@@ -37,7 +38,7 @@ import { SearchModule } from 'src/search/search.module';
         }),
         inject: [ConfigService],
     }),
-  AuthModule, PostModule, RedisModule, SearchModule, CategoryModule
+  AuthModule, PostModule, RedisModule, SearchModule, CategoryModule, UserModule
 
 ],
 })

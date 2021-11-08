@@ -12,7 +12,7 @@ export class PostController {
     
     constructor(
         private readonly PostService: PostService,
-        private readonly elasticSearchService: PostSearchService
+        private readonly postSearchService: PostSearchService
     ) {}
 
     @UseGuards(JwtAuthGuard)
@@ -30,9 +30,9 @@ export class PostController {
     @Get('search')
     Search(@Query() search: object) {
         if (search["search"]) {
-            return this.elasticSearchService.search(search["search"]);
+            return this.postSearchService.search(search["search"]);
           }
-          return this.elasticSearchService.getAllPosts();
+          return this.postSearchService.getAllPosts();
     }
 
 }

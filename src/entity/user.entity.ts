@@ -12,14 +12,24 @@ export class User {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({unique: true})
+    @Column()
     name: string;
+
+    @Column({
+        type: "varchar",
+        length: 320,
+        unique: true
+    })
+    email: string;
 
     @Column()
     password: string;
 
     @Column("integer", {default: 0})
     balance: number;
+
+    @Column("integer", {default: 0})
+    price: number;
 
     @Column({
         type: "enum",
@@ -28,7 +38,7 @@ export class User {
     })
     role: UserRole
 
-    @OneToMany(() => Post, post => post.author)
+    @OneToMany(() => Post, post => post.author, { cascade: true, })
     posts: Post[];
 
     @CreateDateColumn()
