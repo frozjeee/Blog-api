@@ -3,6 +3,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from 'src/auth/auth.module';
 import { CategoryModule } from 'src/category/category.module';
+import { CommentModule } from 'src/comment/comment.module';
 import { PostModule } from 'src/post/post.module';
 import { RedisModule } from 'src/redis/redis.module';
 import { SearchModule } from 'src/search/search.module';
@@ -38,7 +39,7 @@ import { UserModule } from 'src/user/user.module';
         }),
         inject: [ConfigService],
     }),
-  AuthModule, PostModule, RedisModule, SearchModule, CategoryModule, UserModule
+  AuthModule, PostModule, RedisModule, SearchModule, CategoryModule, UserModule, CommentModule
 
 ],
 })

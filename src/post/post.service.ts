@@ -8,7 +8,6 @@ import { deletePostDto } from './dto/post.dto';
 import { PostInterface } from './interface/post.interface';
 import { User } from 'src/user/user.class';
 import { PostSearchService } from './postSearch.service';
-import { CategoryService } from 'src/category/category.service';
 const randomstring = require('../../node_modules/randomstring/index.js');
 
 @Injectable()
@@ -18,7 +17,6 @@ export class PostService {
     @InjectRepository(PostEntity)
     private readonly postRepository: Repository<PostEntity>,
     private postsSearchService: PostSearchService,
-    private categoryService: CategoryService,
   ) {}
 
     slugifyTitle(title: string): Observable<string> {

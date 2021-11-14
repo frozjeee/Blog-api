@@ -1,4 +1,5 @@
 import {Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, OneToMany} from "typeorm";
+import { Comment } from "./comment.entity";
 import {Post} from "./post.entity";
 
 export enum UserRole {
@@ -40,6 +41,9 @@ export class User {
 
     @OneToMany(() => Post, post => post.author, { cascade: true, })
     posts: Post[];
+
+    @OneToMany(() => Comment, comment => comment.author, { cascade: true, })
+    comments: Comment[];
 
     @CreateDateColumn()
     registered_at: Date;
