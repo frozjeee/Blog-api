@@ -7,6 +7,7 @@ import { Comment as CommentEntity } from 'src/entity/comment.entity';
 import { PostInterface } from 'src/post/interface/post.interface';
 import { User } from 'src/user/user.class';
 import { Repository } from 'typeorm';
+import { commentToUpdate } from './dto/comment.dto';
 import { CommentInterface } from './interface/comment.interface';
 
 @Injectable()
@@ -18,7 +19,6 @@ export class CommentService {
         ){}
 
         writeComment(comment: CommentInterface, user: User) {
-            console.log(comment);
             comment.author = user["user"];
             return from(this.commentRepository.save(
                 {
@@ -26,11 +26,15 @@ export class CommentService {
                 }
             ))
         }
+        
+        updateComment(comment: commentToUpdate) {
+            return from(this.commentRepository.update({id: comment.id}, {text: comment.text}));
+        }
 
         getAllPostComments(post: PostInterface) {
             return from(this.commentRepository.find({
                 where: {
-                    postId: post,
+                    Post: post.id,
                 },
                 relations: ['author'],
             })

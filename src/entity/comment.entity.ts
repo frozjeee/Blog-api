@@ -1,3 +1,4 @@
+import { userInterface } from "src/user/interface/user.interface";
 import { Column, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Post } from "./post.entity";
 import { User } from "./user.entity";
@@ -17,7 +18,7 @@ export class Comment {
     text: string;
 
     @ManyToOne(() => User, user => user.posts, {onDelete: 'CASCADE',})
-    author: User;
+    author: userInterface;
 
     @ManyToMany(() => Comment)
     @JoinTable()

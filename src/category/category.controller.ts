@@ -2,7 +2,8 @@ import { Body, Controller, Get, Post } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { Category } from 'src/entity/category.entity';
 import { CategoryService } from './category.service';
-import { categoriesToUpdate } from './dto/category.dto';
+import { categoryToUpdate } from './dto/category.dto';
+import { CategoryInterface } from './interface/category.interface';
 
 @Controller('category')
 export class CategoryController {
@@ -11,22 +12,27 @@ export class CategoryController {
     ) {}
 
     @Post('create')
-    createCategory(@Body() category: Category): Observable<Category> {
+    createCategory(@Body() category: CategoryInterface): Observable<CategoryInterface> {
         return this.categoryService.createCategory(category);
     }
 
     @Post('update')
-    updateCategory(@Body() categories: categoriesToUpdate){
-        return this.categoryService.updateCategory(categories);
+    updateCategory(@Body() categoryToUpdate: categoryToUpdate){
+        return this.categoryService.updateCategory(categoryToUpdate);
     }
 
     @Post('delete')
-    deleteCategory(@Body() category: Category){
+    deleteCategory(@Body() category: CategoryInterface){
         return this.categoryService.deleteCategory(category);
     }
 
+    @Post('findOne')
+    findOne(@Body() category: string){
+        return this.categoryService.findOneCategory(category);
+    }
+
     @Get('getAll')
-    getAllCategories(): Observable<Category[]> {
+    getAllCategories(): Observable<CategoryInterface[]> {
         return this.categoryService.getAllCategories();
     }
 }

@@ -44,7 +44,24 @@ export class PostService {
       );
   }
 
-  delete(slug: deletePostDto): Observable<object> {
+  updatePost(post: PostInterface): Observable<any> {
+    return from(this.postRepository.findOne(post["id"]))
+    .pipe(
+      map((value: PostInterface) => {
+        if (value) {
+          this.postRepository.update(post["id"], post);
+          this.postsSearchService.indexPost(post);
+          return post;
+        }
+        else {
+          return {message: "Post not found"};
+        }
+      })
+    );
+  }
+
+
+  deletePost(slug: deletePostDto): Observable<object> {
     return from(this.postRepository.findOne(slug))
     .pipe(
       map((value: deletePostDto) => {

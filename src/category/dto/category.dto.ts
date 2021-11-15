@@ -1,4 +1,4 @@
-export class categoriesToUpdate {
-    categoryToChange: string;
+export class categoryToUpdate {
+    categoryId: number;
     category: string;
 }

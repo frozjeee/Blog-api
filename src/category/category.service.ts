@@ -4,7 +4,8 @@ import { from, Observable, of } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { Category as CategoryEntity } from 'src/entity/category.entity';
 import { Repository } from 'typeorm';
-import { categoriesToUpdate } from './dto/category.dto';
+import { categoryToUpdate } from './dto/category.dto';
+import { CategoryInterface } from './interface/category.interface';
 
 @Injectable()
 export class CategoryService {
@@ -14,25 +15,25 @@ export class CategoryService {
         private readonly categoryRepository: Repository<CategoryEntity>,
         ){}
 
-        createCategory(category: CategoryEntity): Observable<CategoryEntity> {
+        createCategory(category: CategoryInterface): Observable<CategoryInterface> {
             return from(this.categoryRepository.save(category));
         }
 
-        deleteCategory(category: CategoryEntity): Observable<string> {
-            this.categoryRepository.remove(category);
+        deleteCategory(category: CategoryInterface): Observable<string> {
+            this.categoryRepository.delete(category);
             return of("Category was deleted");
         }
 
-        updateCategory(categories: categoriesToUpdate){
-            this.categoryRepository.update({name: categories.categoryToChange}, {name: categories.category});
+        updateCategory(categoryToUpdate: categoryToUpdate){
+            this.categoryRepository.update({id: categoryToUpdate.categoryId}, {name: categoryToUpdate.category});
             return of("Category was updated");
         }
 
-        getAllCategories(): Observable<CategoryEntity[]> {
+        getAllCategories(): Observable<CategoryInterface[]> {
             return from(this.categoryRepository.find());
         }
 
-        findOneCategory(id: number): Observable<CategoryEntity> {
-            return from(this.categoryRepository.findOne(id));
+        findOneCategory(category: string): Observable<CategoryInterface> {
+            return from(this.categoryRepository.findOne(category));
         }
 }

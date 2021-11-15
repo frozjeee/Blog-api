@@ -1,4 +1,7 @@
-export class createUserDto {
+import { UserRole } from "src/entity/user.entity";
+
+export class userDto {
+    id: number;
     name: string;
-    password: string;
+    role: UserRole;
 }

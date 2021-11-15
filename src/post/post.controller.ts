@@ -24,7 +24,7 @@ export class PostController {
     @UseGuards(JwtAuthGuard)
     @Post('delete')
     deletePost(@Body() payload: deletePostDto): Observable<object> {
-        return this.postService.delete(payload);
+        return this.postService.deletePost(payload);
     }
 
     @Get('search')
