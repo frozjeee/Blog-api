@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { from, Observable, forkJoin, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
-import { User as UserEntity } from 'src/entity/user.entity';
+import { Users as UserEntity } from 'src/entity/users.entity';
 import { User } from 'src/user/user.class';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
@@ -17,7 +17,8 @@ import { UserSearchService } from 'src/user/userSearch.service';
 @Injectable()
 export class AuthService {
 
-    constructor (@InjectRepository(UserEntity)
+    constructor (
+    @InjectRepository(UserEntity)
     private userRepository: Repository<UserEntity>,
     private jwtService: JwtService,
     private redisService: RedisService,
@@ -39,12 +40,12 @@ export class AuthService {
     }
 
 
-    validateUser(name: string, password: string): Observable<User> {
+    validateUser(email: string, password: string): Observable<User> {
       return from(
         this.userRepository.findOne(
-          { name },
+          { email },
           {
-            select: ['id', 'name', 'balance', 'password', 'role'],
+            select: ['id', 'name', 'email', 'password', 'role'],
           },
         ),
       ).pipe(
@@ -107,8 +108,8 @@ export class AuthService {
           )}
 
     login(user: User): Observable<TokensDto> {
-      const { name, password } = user;
-      return this.validateUser(name, password).pipe(
+      const { email, password } = user;
+      return this.validateUser(email, password).pipe(
         switchMap((user: User) => {
           if (user) {
             const accessToken = from(this.jwtService.signAsync({ user }, {expiresIn: "5 minute"}));

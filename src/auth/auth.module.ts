@@ -2,7 +2,7 @@ import { MiddlewareConsumer, NestModule, RequestMethod } from '@nestjs/common';
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User as UserEntity} from 'src/entity/user.entity';
+import { Users as UserEntity} from 'src/entity/users.entity';
 import { RedisModule } from 'src/redis/redis.module';
 import { RedisService } from 'src/redis/redis.service';
 import { SearchModule } from 'src/search/search.module';

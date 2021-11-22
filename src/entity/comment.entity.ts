@@ -1,7 +1,6 @@
-import { userInterface } from "src/user/interface/user.interface";
-import { Column, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Post } from "./post.entity";
-import { User } from "./user.entity";
+import { Users } from "./users.entity";
 
 @Entity()
 export class Comment {
@@ -17,11 +16,23 @@ export class Comment {
     @Column()
     text: string;
 
-    @ManyToOne(() => User, user => user.posts, {onDelete: 'CASCADE',})
-    author: userInterface;
+    @ManyToOne(() => Users, user => user.posts, {onDelete: 'CASCADE',})
+    author: Users;
 
     @ManyToMany(() => Comment)
-    @JoinTable()
+    @JoinTable({
+        name: "comment_replies_comment",
+        joinColumn: {
+            name: "comment",
+            referencedColumnName: "id"
+        },
+        inverseJoinColumn: {
+            name: "response",
+            referencedColumnName: "id"
+        }
+    })
     replies: Comment[];
 
+    @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)" })
+    created_at: Date;
 }

@@ -1,6 +1,7 @@
+import { IsEmail, IsNotEmpty } from "class-validator";
 import {Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, OneToMany} from "typeorm";
 import { Comment } from "./comment.entity";
-import {Post} from "./post.entity";
+import { Post } from "./post.entity";
 
 export enum UserRole {
     ADMIN = "admin",
@@ -8,7 +9,7 @@ export enum UserRole {
 }
 
 @Entity()
-export class User {
+export class Users {
 
     @PrimaryGeneratedColumn()
     id: number;
@@ -45,7 +46,7 @@ export class User {
     @OneToMany(() => Comment, comment => comment.author, { cascade: true, })
     comments: Comment[];
 
-    @CreateDateColumn()
+    @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)" })
     registered_at: Date;
 
 }

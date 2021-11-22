@@ -1,12 +1,12 @@
 import { Category } from "src/entity/category.entity";
-import { User } from "src/entity/user.entity";
+import { Users } from "src/entity/users.entity";
 
 export interface PostInterface {
     id: number;
     title: string;
     slug: string;
     content: string;
-    author: User;
+    author: Users;
     category: Category;
     created_at: Date;
 }

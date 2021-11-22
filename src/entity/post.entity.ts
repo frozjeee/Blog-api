@@ -1,5 +1,5 @@
 import {Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToOne, OneToOne, JoinColumn, OneToMany } from "typeorm";
-import {User} from "./user.entity";
+import { Users } from "./users.entity";
 import {Category} from "./category.entity";
 import { Comment } from "./comment.entity";
 
@@ -18,8 +18,8 @@ export class Post {
     @Column()
     content: string;
 
-    @ManyToOne(() => User, user => user.posts, {onDelete: 'CASCADE',})
-    author: User;
+    @ManyToOne(() => Users, users => users.posts, {onDelete: 'CASCADE',})
+    author: Users;
 
     @Column("integer", {default: 0})
     likes: number;
@@ -37,7 +37,7 @@ export class Post {
     @JoinColumn()
     category: Category;
 
-    @CreateDateColumn()
+    @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)" })
     created_at: Date;
 
     
