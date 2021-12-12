@@ -7,6 +7,9 @@ export interface PostInterface {
     slug: string;
     content: string;
     author: Users;
+    likes: number;
+    dislikes: number;
+    views: number;
     category: Category;
     created_at: Date;
 }

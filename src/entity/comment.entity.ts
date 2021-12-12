@@ -7,7 +7,7 @@ export class Comment {
     @PrimaryGeneratedColumn()
     id: number;
     
-    @ManyToOne(() => Post, post => post.comments, {onDelete: 'CASCADE',})
+    @ManyToOne(() => Post, post => post.comments, { onDelete: 'CASCADE' })
     Post: Post;
 
     @Column("boolean", {default: 0})
@@ -16,10 +16,10 @@ export class Comment {
     @Column()
     text: string;
 
-    @ManyToOne(() => Users, user => user.posts, {onDelete: 'CASCADE',})
+    @ManyToOne(() => Users, user => user.posts, { onDelete: 'CASCADE' })
     author: Users;
 
-    @ManyToMany(() => Comment)
+    @ManyToMany(() => Comment, { cascade: true, })
     @JoinTable({
         name: "comment_replies_comment",
         joinColumn: {

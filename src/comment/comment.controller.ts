@@ -39,4 +39,9 @@ export class CommentController {
         return this.commentService.getAllCommentReplies(comment);
     }
 
+    @Post('delete')
+    deleteComment(@Body() comment: CommentInterface) {
+        return this.commentService.deleteComment(comment);
+    }
+
 }

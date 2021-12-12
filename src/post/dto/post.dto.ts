@@ -3,5 +3,5 @@ export class findPostDto {
 }
 
 export class deletePostDto {
-    slug: string;
+    id: number;
 }

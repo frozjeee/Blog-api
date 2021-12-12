@@ -1,4 +1,5 @@
-import { Controller, Post, Body, Get, Query } from '@nestjs/common';
+import { Controller, Post, Body, Get, Query, Request, UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { User } from './user.class';
 import { UserService } from './user.service';
 import { UserSearchService } from './userSearch.service';
@@ -8,6 +9,7 @@ export class UserController {
 
     constructor(
         private readonly userSearchService: UserSearchService,
+        private readonly userService: UserService
         ){}
 
     @Get('search')
@@ -18,5 +20,10 @@ export class UserController {
             return this.userSearchService.getAllUsers();
     }
 
+    @UseGuards(JwtAuthGuard)
+    @Post('delete')
+    Delete(@Request() req) {
+        return this.userService.deleteUser(req.user);
+    }
 
 }

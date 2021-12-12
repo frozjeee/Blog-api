@@ -50,6 +50,22 @@ export class CommentService {
             return from(this.commentRepository.update({id: comment.id}, {text: comment.text}));
         }
 
+        deleteComment(comment: CommentInterface) {
+            const entityManager = getManager();   
+            return from(entityManager.query(`SELECT response FROM comment_replies_comment WHERE comment = ${comment.id}`))
+            .pipe(
+                map((values) => {
+                    while(values.length > 0) {
+                        from(entityManager.query(`DELETE FROM comment WHERE id = ${values[0].response}`));
+                        values.shift();
+                    }
+                    from(entityManager.query(`DELETE FROM comment WHERE id = ${comment.id}`));
+                    return {message: "Comment deleted"};
+                })
+            )
+
+        }
+
         getAllPostComments(post: PostInterface) {
             const entityManager = getManager();
             return from(entityManager.query(

@@ -112,8 +112,12 @@ export class AuthService {
       return this.validateUser(email, password).pipe(
         switchMap((user: User) => {
           if (user) {
-            const accessToken = from(this.jwtService.signAsync({ user }, {expiresIn: "5 minute"}));
-            const refreshToken = from(this.jwtService.signAsync({ user }, {expiresIn: "1 hour"}));
+            const accessToken = from(this.jwtService.signAsync({
+              user
+              }, {expiresIn: "5 minute"}));
+            const refreshToken = from(this.jwtService.signAsync({ 
+              user
+            }, {expiresIn: "1 hour"}));
             return forkJoin({accessToken, refreshToken});
           } 
 

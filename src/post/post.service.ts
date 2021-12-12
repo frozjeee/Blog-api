@@ -49,7 +49,7 @@ export class PostService {
     .pipe(
       map((value: PostInterface) => {
         if (value) {
-          this.postRepository.update(post["id"], post);
+          this.postRepository.update({id: post["id"]}, {likes: post.likes + 1});
           this.postsSearchService.indexPost(post);
           return post;
         }
@@ -61,8 +61,8 @@ export class PostService {
   }
 
 
-  deletePost(slug: deletePostDto): Observable<object> {
-    return from(this.postRepository.findOne(slug))
+  deletePost(id: deletePostDto): Observable<object> {
+    return from(this.postRepository.findOne(id))
     .pipe(
       map((value: deletePostDto) => {
         if (value) {
@@ -78,5 +78,20 @@ export class PostService {
     );
   }
 
+  likePost(post: PostInterface): Observable<any> {
+    return from(this.postRepository.findOne(post["id"]))
+    .pipe(
+      map((value: PostInterface) => {
+        if (value) {
+          this.postRepository.update(post["id"], {likes: post.likes + 1});
+          this.postsSearchService.indexPost(post);
+          return post;
+        }
+        else {
+          return {message: "Post not found"};
+        }
+      })
+    );
+  }
   
 }
